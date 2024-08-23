@@ -1,7 +1,5 @@
 import subprocess
 import time
-from openpyxl import Workbook
-from datetime import datetime
 import os
 
 
@@ -14,17 +12,17 @@ def query_dns(domain):
 
 def check_stale_entries(input_file):
    # Export results to a XLS
-    wb = Workbook()
-    ws = wb.active
-    ws.title = "DNS Check Results"
-    ws.append(["Domain", "Status", "IP Addresses", "Timestamp"])
+   # wb = Workbook()
+   # ws = wb.active
+   # ws.title = "DNS Check Results"
+   # ws.append(["Domain", "Status", "IP Addresses", "Timestamp"])
     # Begin stale entries analysis
     stale_entries = []
     with open(input_file, "r") as f:
         for line in f:
             domain = line.strip()
             actual_ips = query_dns(domain)
-            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            # timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             
             if not actual_ips:
                 status = "Stale (No IP found)"
@@ -34,7 +32,7 @@ def check_stale_entries(input_file):
                 status = "Resolved"
                 print(f"{domain} resolved to {', '.join(actual_ips)}")
             
-            ws.append([domain, status, ", ".join(actual_ips), timestamp])
+            # ws.append([domain, status, ", ".join(actual_ips), timestamp])
             time.sleep(1)  # Add a delay to avoid rate limiting
     return stale_entries
 
